@@ -46,16 +46,15 @@ jobs:
             git pull origin main
           fi
 
-          cd ids
-
           # Kill existing Flask process if running
           pkill -f "python3.11 app.py" || true
 
-          # Install dependencies
-          if [ -f "requirements.txt" ]; then
-            python3.11 -m pip install -r requirements.txt
-          fi
+          # Move into actual app directory
+          cd ids
 
-          # Start Flask app
+          # Install dependencies from correct location
+          python3.11 -m pip install -r requirements.txt
+
+          # Run Flask app
           nohup python3.11 app.py > flask.log 2>&1 &
         EOF
