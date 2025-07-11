@@ -41,13 +41,15 @@ jobs:
           cd ~/flask-app
 
           if [ ! -d ".git" ]; then
-            git clone ${{ secrets.REPO_URL }} . 
+            git clone ${{ secrets.REPO_URL }} .
           else
             git pull origin main
           fi
 
+          cd ids
+
           # Kill existing Flask process if running
-          pkill -f "python.*app.py" || true
+          pkill -f "python3.11 app.py" || true
 
           # Install dependencies
           if [ -f "requirements.txt" ]; then
