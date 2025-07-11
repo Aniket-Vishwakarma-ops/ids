@@ -18,13 +18,12 @@ jobs:
         echo "${{ secrets.EC2_KEY }}" > idskeypair.pem
         chmod 600 idskeypair.pem
 
-    - name: Deploy Flask App via SSH
+        - name: Deploy Flask App via SSH
       run: |
         ssh -o StrictHostKeyChecking=no -i idskeypair.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
           sudo dnf groupinstall -y "Development Tools"
           sudo dnf install -y gcc openssl-devel bzip2-devel libffi-devel zlib-devel wget make git
 
-          # Install Python 3.11.5 if not already
           if ! command -v python3.11 &> /dev/null; then
             cd /usr/src
             sudo wget https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tgz
@@ -36,25 +35,22 @@ jobs:
             python3.11 -m ensurepip --upgrade
           fi
 
-          # Ensure pip is available and up to date
           python3.11 -m pip install --upgrade pip
           python3.11 -m pip --version
 
-          # Clean existing app folder
-          rm -rf ~/flask-app
+          # Clean old directory and clone fresh
+          rm -rf ~/ids
+          git clone ${{ secrets.REPO_URL }} ~/ids
 
-          # Clone fresh copy of the repo
-          git clone ${{ secrets.REPO_URL }} ~/flask-app
-
-          # Kill any running Flask process
+          # Kill existing Flask process if running
           pkill -f "python3.11 app.py" || true
 
-          # Move into actual app directory
-          cd ~/flask-app/ids
+          cd ~/ids
 
           # Install dependencies
           python3.11 -m pip install -r requirements.txt
 
-          # Run Flask app
+          # Start Flask app
           nohup python3.11 app.py > flask.log 2>&1 &
         EOF
+
