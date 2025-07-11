@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result - AI Threat Intelligence{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold">
+                    <i class="fas fa-chart-line me-3 text-primary"></i>
+                    Threat Analysis Result
+                </h1>
+                <p class="lead text-muted">AI-powered cybersecurity threat prediction analysis</p>
+            </div>
+
+            <!-- Main Prediction Result -->
+            <div class="prediction-result {{ 'prediction-threat' if result.is_threat else 'prediction-benign' }}">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-3">
+                            <i class="fas fa-{{ 'exclamation-triangle text-danger' if result.is_threat else 'shield-alt text-success' }} me-3"></i>
+                            Prediction: <strong>{{ result.prediction }}</strong>
+                        </h2>
+                        <p class="lead mb-3">
+                            The AI model has analyzed the network flow and classified it as 
+                            <strong>{{ 'a potential security threat' if result.is_threat else 'benign traffic' }}</strong>.
+                        </p>
+                        <div class="d-flex align-items-center">
+                            <span class="me-3 fw-semibold">Confidence Level:</span>
+                            <div class="progress flex-grow-1 me-3" style="height: 25px;">
+                                <div class="progress-bar bg-{{ 'danger' if result.is_threat else 'success' }}" 
+                                     role="progressbar" 
+                                     style="width: {{ result.confidence }}%">
+                                     {{ "%.1f"|format(result.confidence) }}%
+                                </div>
+                            </div>
+                            <span class="badge bg-{{ 'danger' if result.is_threat else 'success' }} fs-6">
+                                {{ "%.1f"|format(result.confidence) }}%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-{{ 'exclamation-triangle' if result.is_threat else 'check-circle' }} 
+                           text-{{ 'danger' if result.is_threat else 'success' }}" 
+                           style="font-size: 6rem;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Probabilities -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>
+                        Detailed Classification Probabilities
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for class_name, probability in result.probabilities.items() %}
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-semibold">
+                                    <i class="fas fa-{{ 'shield-alt text-success' if class_name == 'Benign' else 'exclamation-triangle text-danger' }} me-2"></i>
+                                    {{ class_name }}
+                                </span>
+                                <span class="badge bg-{{ 'success' if class_name == 'Benign' else 'danger' }}">
+                                    {{ "%.2f"|format(probability) }}%
+                                </span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-{{ 'success' if class_name == 'Benign' else 'danger' }}" 
+                                     role="progressbar" 
+                                     style="width: {{ probability }}%">
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center">
+                <a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-redo me-2"></i>
+                    New Prediction
+                </a>
+                <a href="{{ url_for('batch_predict') }}" class="btn btn-outline-primary btn-lg me-3">
+                    <i class="fas fa-file-csv me-2"></i>
+                    Batch Analysis
+                </a>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-home me-2"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

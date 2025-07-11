@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}AI Threat Intelligence System - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="fas fa-shield-alt me-3"></i>
+                    AI Threat Intelligence System
+                </h1>
+                <p class="lead mb-4">
+                    Advanced machine learning-powered cybersecurity threat detection and prediction system. 
+                    Identify potential threats in network traffic using state-of-the-art Random Forest algorithms.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('predict') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-search me-2"></i>Start Prediction
+                    </a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-network-wired" style="font-size: 15rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Model Performance Section -->
+{% if model_info %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3">
+                    <i class="fas fa-chart-line me-2 text-primary"></i>
+                    Model Performance
+                </h2>
+                <p class="text-muted">Our AI model has been trained and validated on extensive network traffic data</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-robot feature-icon"></i>
+                        <h5 class="card-title">{{ model_info.best_model_name }}</h5>
+                        <p class="card-text">Best Performing Model</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-bullseye feature-icon"></i>
+                        <h3 class="text-success">{{ "%.2f"|format(model_info.best_model_score * 100) }}%</h3>
+                        <p class="card-text">F1-Score Accuracy</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-layer-group feature-icon"></i>
+                        <h3 class="text-info">{{ model_info.pca_components }}</h3>
+                        <p class="card-text">PCA Components</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-percentage feature-icon"></i>
+                        <h3 class="text-warning">{{ "%.1f"|format(model_info.pca_variance_ratio * 100) }}%</h3>
+                        <p class="card-text">Variance Retained</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Features Section -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3">
+                    <i class="fas fa-cogs me-2 text-primary"></i>
+                    System Features
+                </h2>
+                <p class="text-muted">Comprehensive threat detection capabilities powered by advanced AI</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-search-plus feature-icon"></i>
+                        <h5 class="card-title">Single Prediction</h5>
+                        <p class="card-text">
+                            Analyze individual network flows with detailed feature input and 
+                            get instant threat prediction with confidence scores.
+                        </p>
+                        <a href="{{ url_for('predict') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-1"></i>Try Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-file-csv feature-icon"></i>
+                        <h5 class="card-title">Batch Processing</h5>
+                        <p class="card-text">
+                            Upload CSV files with multiple network flow records and 
+                            get bulk threat analysis with downloadable results.
+                        </p>
+                        <a href="{{ url_for('batch_predict') }}" class="btn btn-primary">
+                            <i class="fas fa-upload me-1"></i>Upload File
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-api feature-icon"></i>
+                        <h5 class="card-title">API Integration</h5>
+                        <p class="card-text">
+                            RESTful API endpoints for seamless integration with existing 
+                            security systems and automated threat detection workflows.
+                        </p>
+                        <a href="{{ url_for('about') }}" class="btn btn-primary">
+                            <i class="fas fa-book me-1"></i>API Docs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3">
+                    <i class="fas fa-cog me-2 text-primary"></i>
+                    How It Works
+                </h2>
+                <p class="text-muted">Our AI-powered threat detection process in simple steps</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="card border-0 bg-transparent">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                        <h5 class="mt-3">1. Input Data</h5>
+                        <p class="text-muted">Provide network flow features or upload CSV file</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="card border-0 bg-transparent">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h5 class="mt-3">2. Feature Engineering</h5>
+                        <p class="text-muted">Apply advanced feature engineering and scaling</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="card border-0 bg-transparent">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-warning text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h5 class="mt-3">3. AI Analysis</h5>
+                        <p class="text-muted">Random Forest model analyzes threat patterns</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 text-center">
+                <div class="card border-0 bg-transparent">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-danger text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="mt-3">4. Threat Detection</h5>
+                        <p class="text-muted">Get prediction results with confidence scores</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="mb-3">
+                    <i class="fas fa-rocket me-2"></i>
+                    Ready to Secure Your Network?
+                </h2>
+                <p class="lead mb-4">
+                    Start using our AI-powered threat detection system today and protect your infrastructure 
+                    from cyber threats with cutting-edge machine learning technology.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('predict') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-play me-2"></i>Start Detection
+                    </a>
+                    <a href="{{ url_for('batch_predict') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-file-upload me-2"></i>Batch Upload
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

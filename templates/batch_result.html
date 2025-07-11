@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Batch Results - AI Threat Intelligence{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">
+            <i class="fas fa-chart-bar me-3"></i>
+            Batch Analysis Results
+        </h1>
+        <p class="lead text-muted">{{ results|length }} network flows analyzed</p>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-list me-2"></i>
+                Threat Analysis Results
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Row #</th>
+                            <th>Prediction</th>
+                            <th>Confidence</th>
+                            <th>Threat Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{ result.index }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'danger' if result.is_threat else 'success' }}">
+                                    {{ result.prediction }}
+                                </span>
+                            </td>
+                            <td>{{ result.confidence }}%</td>
+                            <td>
+                                <i class="fas fa-{{ 'exclamation-triangle text-danger' if result.is_threat else 'check-circle text-success' }}"></i>
+                                {{ 'THREAT' if result.is_threat else 'BENIGN' }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('batch_predict') }}" class="btn btn-primary me-3">
+            <i class="fas fa-upload me-2"></i>
+            Upload Another File
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-home me-2"></i>
+            Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

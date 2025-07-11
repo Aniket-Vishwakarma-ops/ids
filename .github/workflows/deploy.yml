@@ -1,0 +1,59 @@
+name: Deploy Flask App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+
+    - name: Save EC2 private key
+      run: |
+        echo "${{ secrets.EC2_KEY }}" > idskeypair.pem
+        chmod 600 idskeypair.pem
+
+    - name: Deploy Flask App via SSH
+      run: |
+        ssh -o StrictHostKeyChecking=no -i idskeypair.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          sudo dnf groupinstall -y "Development Tools"
+          sudo dnf install -y gcc openssl-devel bzip2-devel libffi-devel zlib-devel wget make git
+
+          # Install Python 3.11.5 if not already
+          if ! command -v python3.11 &> /dev/null; then
+            cd /usr/src
+            sudo wget https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tgz
+            sudo tar xzf Python-3.11.5.tgz
+            cd Python-3.11.5
+            sudo ./configure --enable-optimizations
+            sudo make -j$(nproc)
+            sudo make altinstall
+            python3.11 -m ensurepip --upgrade
+          fi
+
+          # Clone or update the Flask app
+          mkdir -p ~/flask-app
+          cd ~/flask-app
+
+          if [ ! -d ".git" ]; then
+            git clone ${{ secrets.REPO_URL }} . 
+          else
+            git pull origin main
+          fi
+
+          # Kill existing Flask process if running
+          pkill -f "python.*app.py" || true
+
+          # Install dependencies
+          if [ -f "requirements.txt" ]; then
+            python3.11 -m pip install -r requirements.txt
+          fi
+
+          # Start Flask app
+          nohup python3.11 app.py > flask.log 2>&1 &
+        EOF

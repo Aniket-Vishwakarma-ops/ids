@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}About - AI Threat Intelligence{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">
+            <i class="fas fa-info-circle me-3"></i>
+            About AI Threat Intelligence System
+        </h1>
+        <p class="lead text-muted">Automating Threat Intelligence using AI in Cyber Threat Prediction and Mitigation</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="text-primary mb-3">Project Overview</h3>
+                    <p>
+                        This AI Threat Intelligence System is designed to automate cybersecurity threat detection 
+                        and prediction using advanced machine learning algorithms. The system analyzes network 
+                        flow characteristics to identify potential security threats in real-time.
+                    </p>
+                    
+                    <h4 class="text-primary mt-4 mb-3">Key Features</h4>
+                    <ul>
+                        <li><strong>Real-time Threat Detection:</strong> Instant analysis of network flows</li>
+                        <li><strong>High Accuracy:</strong> Advanced Random Forest model with high precision</li>
+                        <li><strong>Batch Processing:</strong> Analyze multiple network flows simultaneously</li>
+                        <li><strong>RESTful API:</strong> Easy integration with existing security systems</li>
+                        <li><strong>Feature Engineering:</strong> Advanced feature extraction and selection</li>
+                    </ul>
+
+                    <h4 class="text-primary mt-4 mb-3">Technical Specifications</h4>
+                    {% if model_info %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><strong>ML Algorithm:</strong></td>
+                                <td>{{ model_info.best_model_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Model Accuracy:</strong></td>
+                                <td>{{ "%.2f"|format(model_info.best_model_score * 100) }}% F1-Score</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Features Used:</strong></td>
+                                <td>{{ model_info.feature_names|length }} network flow features</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PCA Components:</strong></td>
+                                <td>{{ model_info.pca_components }} ({{ "%.1f"|format(model_info.pca_variance_ratio * 100) }}% variance)</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">API Endpoints</h5>
+                </div>
+                <div class="card-body">
+                    <h6>POST /api/predict</h6>
+                    <p class="small">Single prediction endpoint for JSON data</p>
+                    
+                    <h6>Example Request:</h6>
+                    <pre class="small bg-light p-2 rounded"><code>{
+  "Flow Duration": 424296,
+  "Total Fwd Packets": 17,
+  "Total Backward Packets": 11,
+  ...
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Contact Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Project:</strong> Aniketh Thesis</p>
+                    <p><strong>Topic:</strong> Automating Threat Intelligence</p>
+                    <p><strong>Technology:</strong> Flask, Python, Scikit-learn</p>
+                    <p><strong>Year:</strong> 2024</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

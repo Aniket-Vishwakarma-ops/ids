@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+
+{% block title %}Single Prediction - AI Threat Intelligence{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary">
+                    <i class="fas fa-search me-3"></i>
+                    Threat Prediction Analysis
+                </h1>
+                <p class="lead text-muted">
+                    Enter network flow features to analyze potential cybersecurity threats using our AI model
+                </p>
+            </div>
+
+            <!-- Prediction Form -->
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-form me-2"></i>
+                        Network Flow Features Input
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" id="predictionForm">
+                        <div class="row g-3">
+                            <!-- Flow Duration Features -->
+                            <div class="col-12">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-clock me-2"></i>Flow Duration & Timing
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Flow Duration</label>
+                                <input type="number" step="any" name="Flow Duration" class="form-control" 
+                                       placeholder="Enter flow duration in microseconds" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Flow IAT Mean</label>
+                                <input type="number" step="any" name="Flow IAT Mean" class="form-control" 
+                                       placeholder="Mean inter-arrival time" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Flow IAT Std</label>
+                                <input type="number" step="any" name="Flow IAT Std" class="form-control" 
+                                       placeholder="Standard deviation of IAT" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fwd IAT Mean</label>
+                                <input type="number" step="any" name="Fwd IAT Mean" class="form-control" 
+                                       placeholder="Forward IAT mean" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fwd IAT Std</label>
+                                <input type="number" step="any" name="Fwd IAT Std" class="form-control" 
+                                       placeholder="Forward IAT standard deviation" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Bwd IAT Mean</label>
+                                <input type="number" step="any" name="Bwd IAT Mean" class="form-control" 
+                                       placeholder="Backward IAT mean" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Bwd IAT Std</label>
+                                <input type="number" step="any" name="Bwd IAT Std" class="form-control" 
+                                       placeholder="Backward IAT standard deviation" value="0">
+                            </div>
+
+                            <!-- Packet Information -->
+                            <div class="col-12 mt-4">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-network-wired me-2"></i>Packet Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Total Fwd Packets</label>
+                                <input type="number" step="any" name="Total Fwd Packets" class="form-control" 
+                                       placeholder="Number of forward packets" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Total Backward Packets</label>
+                                <input type="number" step="any" name="Total Backward Packets" class="form-control" 
+                                       placeholder="Number of backward packets" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fwd Packets Length Total</label>
+                                <input type="number" step="any" name="Fwd Packets Length Total" class="form-control" 
+                                       placeholder="Total forward packet length" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Bwd Packets Length Total</label>
+                                <input type="number" step="any" name="Bwd Packets Length Total" class="form-control" 
+                                       placeholder="Total backward packet length" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Packet Length Mean</label>
+                                <input type="number" step="any" name="Packet Length Mean" class="form-control" 
+                                       placeholder="Mean packet length" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Packet Length Std</label>
+                                <input type="number" step="any" name="Packet Length Std" class="form-control" 
+                                       placeholder="Packet length standard deviation" value="0">
+                            </div>
+
+                            <!-- Flow Statistics -->
+                            <div class="col-12 mt-4">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-chart-line me-2"></i>Flow Statistics
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Flow Bytes/s</label>
+                                <input type="number" step="any" name="Flow Bytes/s" class="form-control" 
+                                       placeholder="Flow bytes per second" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Flow Packets/s</label>
+                                <input type="number" step="any" name="Flow Packets/s" class="form-control" 
+                                       placeholder="Flow packets per second" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Avg Packet Size</label>
+                                <input type="number" step="any" name="Avg Packet Size" class="form-control" 
+                                       placeholder="Average packet size" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Down/Up Ratio</label>
+                                <input type="number" step="any" name="Down/Up Ratio" class="form-control" 
+                                       placeholder="Download/Upload ratio" value="0">
+                            </div>
+
+                            <!-- Header Information -->
+                            <div class="col-12 mt-4">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-file-code me-2"></i>Header Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fwd Header Length</label>
+                                <input type="number" step="any" name="Fwd Header Length" class="form-control" 
+                                       placeholder="Forward header length" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Bwd Header Length</label>
+                                <input type="number" step="any" name="Bwd Header Length" class="form-control" 
+                                       placeholder="Backward header length" value="0">
+                            </div>
+
+                            <!-- TCP Flags -->
+                            <div class="col-12 mt-4">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-flag me-2"></i>TCP Flags
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">FIN Flag Count</label>
+                                <input type="number" step="any" name="FIN Flag Count" class="form-control" 
+                                       placeholder="FIN flags" value="0">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">SYN Flag Count</label>
+                                <input type="number" step="any" name="SYN Flag Count" class="form-control" 
+                                       placeholder="SYN flags" value="0">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">RST Flag Count</label>
+                                <input type="number" step="any" name="RST Flag Count" class="form-control" 
+                                       placeholder="RST flags" value="0">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">PSH Flag Count</label>
+                                <input type="number" step="any" name="PSH Flag Count" class="form-control" 
+                                       placeholder="PSH flags" value="0">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">ACK Flag Count</label>
+                                <input type="number" step="any" name="ACK Flag Count" class="form-control" 
+                                       placeholder="ACK flags" value="0">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">URG Flag Count</label>
+                                <input type="number" step="any" name="URG Flag Count" class="form-control" 
+                                       placeholder="URG flags" value="0">
+                            </div>
+
+                            <!-- Window Information -->
+                            <div class="col-12 mt-4">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-window-maximize me-2"></i>Window Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Init Fwd Win Bytes</label>
+                                <input type="number" step="any" name="Init Fwd Win Bytes" class="form-control" 
+                                       placeholder="Initial forward window bytes" value="0">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Init Bwd Win Bytes</label>
+                                <input type="number" step="any" name="Init Bwd Win Bytes" class="form-control" 
+                                       placeholder="Initial backward window bytes" value="0">
+                            </div>
+                        </div>
+
+                        <!-- Sample Data Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>Quick Test:</strong> Use sample data to test the prediction system
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-sm btn-outline-success me-2" onclick="loadSampleData('benign')">
+                                            Load Benign Sample
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="loadSampleData('malicious')">
+                                            Load Malicious Sample
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-search me-2"></i>
+                                Analyze Threat
+                            </button>
+                            <div class="loading-spinner mt-3">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Analyzing network flow...</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Sample data for testing
+function loadSampleData(type) {
+    const benignSample = {
+        'Flow Duration': 424296,
+        'Total Fwd Packets': 17,
+        'Total Backward Packets': 11,
+        'Fwd Packets Length Total': 537,
+        'Bwd Packets Length Total': 4565,
+        'Flow Bytes/s': 12024.62,
+        'Flow Packets/s': 65.99,
+        'Flow IAT Mean': 15714.667,
+        'Flow IAT Std': 36508.758,
+        'Fwd IAT Mean': 26518.5,
+        'Fwd IAT Std': 45545.47,
+        'Bwd IAT Mean': 38789.8,
+        'Bwd IAT Std': 67955.24,
+        'Fwd Header Length': 528,
+        'Bwd Header Length': 360,
+        'Packet Length Mean': 175.93,
+        'Packet Length Std': 420.94,
+        'FIN Flag Count': 0,
+        'SYN Flag Count': 0,
+        'RST Flag Count': 0,
+        'PSH Flag Count': 1,
+        'ACK Flag Count': 0,
+        'URG Flag Count': 0,
+        'Avg Packet Size': 182.21,
+        'Down/Up Ratio': 0,
+        'Init Fwd Win Bytes': 29200,
+        'Init Bwd Win Bytes': 349
+    };
+    
+    const maliciousSample = {
+        'Flow Duration': 15000,
+        'Total Fwd Packets': 50,
+        'Total Backward Packets': 2,
+        'Fwd Packets Length Total': 2500,
+        'Bwd Packets Length Total': 100,
+        'Flow Bytes/s': 173.33,
+        'Flow Packets/s': 3.47,
+        'Flow IAT Mean': 300,
+        'Flow IAT Std': 150,
+        'Fwd IAT Mean': 300,
+        'Fwd IAT Std': 150,
+        'Bwd IAT Mean': 15000,
+        'Bwd IAT Std': 0,
+        'Fwd Header Length': 1000,
+        'Bwd Header Length': 40,
+        'Packet Length Mean': 50,
+        'Packet Length Std': 10,
+        'FIN Flag Count': 1,
+        'SYN Flag Count': 5,
+        'RST Flag Count': 2,
+        'PSH Flag Count': 0,
+        'ACK Flag Count': 45,
+        'URG Flag Count': 3,
+        'Avg Packet Size': 50,
+        'Down/Up Ratio': 25,
+        'Init Fwd Win Bytes': 65535,
+        'Init Bwd Win Bytes': 512
+    };
+    
+    const sampleData = type === 'benign' ? benignSample : maliciousSample;
+    
+    // Fill form with sample data
+    Object.keys(sampleData).forEach(key => {
+        const input = document.querySelector(`input[name="${key}"]`);
+        if (input) {
+            input.value = sampleData[key];
+        }
+    });
+    
+    // Show success message
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type === 'benign' ? 'success' : 'warning'} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        ${type === 'benign' ? 'Benign' : 'Potentially Malicious'} sample data loaded successfully!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.card'));
+    
+    // Auto-remove alert after 3 seconds
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
+</script>
+{% endblock %}

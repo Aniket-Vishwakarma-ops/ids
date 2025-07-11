@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Batch Prediction - AI Threat Intelligence{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary">
+                    <i class="fas fa-file-csv me-3"></i>
+                    Batch Threat Analysis
+                </h1>
+                <p class="lead text-muted">
+                    Upload a CSV file with network flow data for bulk threat analysis
+                </p>
+            </div>
+
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-upload me-2"></i>
+                        Upload CSV File
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-4">
+                            <label for="file" class="form-label fw-semibold">Select CSV File:</label>
+                            <input type="file" class="form-control" name="file" accept=".csv" required>
+                            <div class="form-text">
+                                File must contain all required network flow features in CSV format.
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-upload me-2"></i>
+                                Upload and Analyze
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <h5 class="alert-heading">
+                    <i class="fas fa-info-circle me-2"></i>
+                    CSV Format Requirements
+                </h5>
+                <p>Your CSV file must contain the following columns:</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <small>
+                            • Flow Duration<br>
+                            • Total Fwd Packets<br>
+                            • Total Backward Packets<br>
+                            • Fwd Packets Length Total<br>
+                            • Bwd Packets Length Total<br>
+                            • Flow Bytes/s<br>
+                            • Flow Packets/s
+                        </small>
+                    </div>
+                    <div class="col-md-6">
+                        <small>
+                            • Flow IAT Mean<br>
+                            • Packet Length Mean<br>
+                            • TCP Flag Counts<br>
+                            • Window Information<br>
+                            • And all other features...
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
