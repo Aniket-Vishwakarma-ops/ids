@@ -18,7 +18,7 @@ jobs:
         echo "${{ secrets.EC2_KEY }}" > idskeypair.pem
         chmod 600 idskeypair.pem
 
-        - name: Deploy Flask App via SSH
+    - name: Deploy Flask App via SSH
       run: |
         ssh -o StrictHostKeyChecking=no -i idskeypair.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
           sudo dnf groupinstall -y "Development Tools"
@@ -53,4 +53,3 @@ jobs:
           # Start Flask app
           nohup python3.11 app.py > flask.log 2>&1 &
         EOF
-
