@@ -40,23 +40,19 @@ jobs:
           python3.11 -m pip install --upgrade pip
           python3.11 -m pip --version
 
-          # Clone or update the Flask app
-          mkdir -p ~/flask-app
-          cd ~/flask-app
+          # Clean existing app folder
+          rm -rf ~/flask-app
 
-          if [ ! -d ".git" ]; then
-            git clone ${{ secrets.REPO_URL }} .
-          else
-            git pull origin main
-          fi
+          # Clone fresh copy of the repo
+          git clone ${{ secrets.REPO_URL }} ~/flask-app
 
-          # Kill existing Flask process if running
+          # Kill any running Flask process
           pkill -f "python3.11 app.py" || true
 
           # Move into actual app directory
-          cd ids
+          cd ~/flask-app/ids
 
-          # Install dependencies from correct location
+          # Install dependencies
           python3.11 -m pip install -r requirements.txt
 
           # Run Flask app
