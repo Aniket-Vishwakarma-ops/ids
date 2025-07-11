@@ -36,6 +36,10 @@ jobs:
             python3.11 -m ensurepip --upgrade
           fi
 
+          # Ensure pip is available and up to date
+          python3.11 -m pip install --upgrade pip
+          python3.11 -m pip --version
+
           # Clone or update the Flask app
           mkdir -p ~/flask-app
           cd ~/flask-app
